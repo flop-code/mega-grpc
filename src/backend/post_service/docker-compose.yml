@@ -1,0 +1,54 @@
+name: mega_grpc
+services:
+  post_service_db:
+    image: postgres:15
+    command: -p ${POSTGRES_PORT}
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - post_service_db_data:/var/lib/postgresql/data
+    expose:
+      - ${POSTGRES_PORT}
+    networks:
+      - post_service_net
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD", "pg_isready", "--dbname=${POSTGRES_DB}", "--username=${POSTGRES_USER}", "--port=${POSTGRES_PORT}"]
+      interval: 5s
+      timeout: 10s
+      retries: 120
+
+  post_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/post_service
+    networks:
+      - post_service_net
+      - services_net
+    expose:
+      - ${APP_PORT}
+    env_file:
+      - ./.env
+    depends_on:
+      post_service_db:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 30
+
+networks:
+  post_service_net:
+    name: post_service_net
+  services_net:
+    name: services_net
+
+volumes:
+    post_service_db_data:
+      name: post_service_db_data

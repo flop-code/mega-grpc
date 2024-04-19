@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/field_mask.proto";
+
+package user_service;
+
+message UserInfoByTokenRequest {
+    string user_token = 1;
+    google.protobuf.FieldMask fields = 2;
+}
+
+message UserInfoByIdRequest {
+    int64 user_id = 1;
+    google.protobuf.FieldMask fields = 2;
+}
+
+message UserInfoResponse {
+    int64 id = 1;
+    string username = 2;
+    string phone_number = 3;
+    string address = 4;
+}
+
+service User {
+    rpc GetUserInfoByToken(UserInfoByTokenRequest) returns (UserInfoResponse);
+    rpc GetUserInfoById(UserInfoByIdRequest) returns (UserInfoResponse);
+}

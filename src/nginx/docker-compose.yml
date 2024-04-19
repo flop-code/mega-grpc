@@ -1,0 +1,14 @@
+name: mega_grpc
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./nginx/Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - services_net
+
+networks:
+  services_net:
+    name: services_net

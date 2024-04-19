@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Madimi+One&display=swap");
+
+#root {
+  width: 100vw;
+  height: 100vh;
+
+  font-family: "Madimi One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+button {
+  font-family: "Madimi One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 150px;
+  background-color: #333;
+  color: #fff;
+}
+.logo {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+article {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+article h1 {
+  font-size: 25px;
+  margin-right: 150px;
+}
+
+.article-1 {
+  background-color: #f0f0f0;
+}
+.article-2 {
+  background-color: #ffffff;
+}
+
+button {
+  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
+  border: 0;
+  border-radius: 12px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  padding: 0 1rem;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.auth-form {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"],
+.auth-form button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button:not([disabled]):hover {
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5), -0.125rem -0.125rem 1rem rgba(239, 71, 101, 0.5), 0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
+}

@@ -1,0 +1,55 @@
+name: mega_grpc_tests
+services:
+  test_user_db:
+    image: postgres:15
+    command: -p ${TEST_POSTGRES_PORT}
+    environment:
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${TEST_POSTGRES_USER}
+      POSTGRES_DB: ${TEST_POSTGRES_DB}
+    expose:
+      - ${TEST_POSTGRES_PORT}
+    networks:
+      - test_user_network
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--dbname=${TEST_POSTGRES_DB}", "--username=${TEST_POSTGRES_USER}", "--port=${TEST_POSTGRES_PORT}" ]
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    attach: false
+
+  test_user_redis:
+    image: redis:7
+    command: ["--port", "${TEST_REDIS_PORT}", "--save", "60", "1", "--loglevel", "warning"]
+    expose:
+      - ${TEST_REDIS_PORT}
+    networks:
+      - test_user_network
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    attach: false
+
+  test_user_app:
+    build:
+      context: ../
+      dockerfile: tests/Dockerfile
+    env_file:
+      - ./.env
+    volumes:
+      - ..:/test_app
+    networks:
+      - test_user_network
+    depends_on:
+      test_user_db:
+        condition: service_healthy
+
+networks:
+  test_user_network:
+    name: test_user_network
